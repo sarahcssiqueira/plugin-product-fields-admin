@@ -9,7 +9,7 @@
  * License:           GPLv2 or later
  * License URI:       https://www.gnu.org/licenses/gpl.html
  * Text Domain:       product-fields-admin
- * 
+ *
  *  @package Product_Fields_Admin
  */
 
