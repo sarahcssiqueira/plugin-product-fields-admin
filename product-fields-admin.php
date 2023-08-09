@@ -16,8 +16,9 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Bootstraps the plugin, run after all plugins are loaded.
+ * Bootstraps the plugin.
  */
 require __DIR__ . '/class-product-fields-admin.php';
 
+use ProductFieldsAdmin\Init;
 Init::get_instance();

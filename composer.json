@@ -11,8 +11,8 @@
     }
   ],
   "support": {
-    "src": "https://github.com/sarahcssiqueira/product-fields-admin",
-    "issues": "https://github.com/sarahcssiqueira/product-fields-admin/issues"
+    "src": "https://github.com/sarahcssiqueira/plugin-product-fields-admin",
+    "issues": "https://github.com/sarahcssiqueira/plugin-product-fields-admin/issues"
   },
   "autoload": {
     "psr-4": {
