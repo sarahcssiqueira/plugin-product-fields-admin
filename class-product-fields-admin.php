@@ -6,6 +6,8 @@
  * @package Product_Fields_Admin
  */
 
+namespace ProductFieldsAdmin;
+
 defined( 'ABSPATH' ) || exit;
 
 class Init {
@@ -14,7 +16,8 @@ class Init {
 
 	public function __construct() {
 
-		add_action( 'woocommerce_product_options_general_product_data', [ $this, 'register_wc_product_custom_fields' ] );
+		add_action( 'woocommerce_product_data_panels', [ $this, 'register_wc_product_custom_fields' ] );
+		add_filter( 'woocommerce_product_data_tabs', [ $this, 'settings_tabs' ] );
 		add_action( 'woocommerce_process_product_meta', [ $this, 'save_wc_product_custom_fields' ] );
 		add_action( 'woocommerce_before_add_to_cart_button', [ $this, 'display_wc_product_custom_fields' ] );
 		add_filter( 'woocommerce_add_to_cart_validation', [ $this, 'validate_wc_custom_fields' ], 10, 3 );
@@ -29,7 +32,9 @@ class Init {
 	 */
 	public function register_wc_product_custom_fields() {
 		global $woocommerce, $post;
-		echo '<div class="product_custom_field">';
+
+		echo '<div id="product_add_ons" class="panel woocommerce_options_panel hidden">';
+
 		woocommerce_wp_text_input(
 			[
 				'id'          => 'custom_product_text_field',
@@ -50,6 +55,23 @@ class Init {
 		$title   = isset( $_POST['custom_product_text_field'] ) ? $_POST['custom_product_text_field'] : '';
 		$product->update_meta_data( 'custom_product_text_field', sanitize_text_field( $title ) );
 		$product->save();
+	}
+
+	/**
+	 * Creates a custom tab for the custom fields
+	 *
+	 * @param array $tabs Custom Tab.
+	 */
+	public function settings_tabs( $tabs ) {
+
+		$tabs['product_add_ons'] = [
+			'label'    => 'Product Add-Ons',
+			'target'   => 'product_add_ons',
+			'class'    => [ 'show_if_simple' ],
+			'priority' => 21,
+		];
+		return $tabs;
+
 	}
 
 	/**
