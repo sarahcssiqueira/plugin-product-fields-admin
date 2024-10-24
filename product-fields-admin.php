@@ -18,7 +18,19 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Bootstraps the plugin.
  */
-require __DIR__ . '/class-product-fields-admin.php';
+require __DIR__ . '/inc/class-render.php';
+require __DIR__ . '/inc/class-register.php';
+require __DIR__ . '/inc/class-checkout.php';
+require __DIR__ . '/inc/class-validations.php';
 
-use ProductFieldsAdmin\Init;
-Init::get_instance();
+
+use ProductFieldsAdmin\Inc\Render;
+use ProductFieldsAdmin\Inc\Register;
+use ProductFieldsAdmin\Inc\Checkout;
+use ProductFieldsAdmin\Inc\Validations;
+
+
+Render::singleton();
+Register::singleton();
+Checkout::singleton();
+Validations::singleton();
