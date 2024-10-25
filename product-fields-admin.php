@@ -25,9 +25,9 @@ require __DIR__ . '/inc/class-validations.php';
 
 use ProductFieldsAdmin\Inc\Register;
 use ProductFieldsAdmin\Inc\Render;
-use ProductFieldsAdmin\Inc\Validations;
+// use ProductFieldsAdmin\Inc\Validations;
 
 
 Register::singleton();
 Render::singleton();
-Validations::singleton();
+// Validations::singleton();
