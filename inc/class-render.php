@@ -24,15 +24,15 @@ class Render {
 	public function __construct() {
 
 		add_action( 'woocommerce_before_add_to_cart_button', [ $this, 'display_wc_product_custom_fields' ] );
-		add_filter( 'woocommerce_add_cart_item_data', [ $this, 'add_wc_custom_field_to_cart_metadata' ], 10, 4 );
 		add_filter( 'woocommerce_get_cart_item_from_session', [ $this, 'get_cart_items_from_session' ], 10, 2 );
+		add_filter( 'woocommerce_add_cart_item_data', [ $this, 'add_wc_custom_field_to_cart_metadata' ], 10, 4 );
 		add_filter( 'woocommerce_get_item_data', [ $this, 'display_custom_field_value_in_cart' ], 10, 2 );
-		add_filter( 'woocommerce_cart_item_name', [ $this, 'add_wc_custom_field_cart_checkout' ], 10, 3 );
 		add_action( 'woocommerce_checkout_create_order_line_item', [ $this, 'add_wc_custom_field_to_order' ], 10, 4 );
 		add_action( 'woocommerce_order_item_meta_end', [ $this, 'display_custom_field_in_order_details' ], 10, 3 );
 	}
 
 	/**
+	 *
 	 * Display the fields in the product page
 	 */
 	public function display_wc_product_custom_fields() {
@@ -52,8 +52,31 @@ class Render {
 		}
 	}
 
+		/**
+		 *
+		 * Preserve custom data in the cart session
+		 */
+	public function get_cart_items_from_session( $cart_item, $values ) {
+		if ( isset( $values['custom_product_text_field'] ) ) {
+			$cart_item['custom_product_text_field'] = $values['custom_product_text_field'];
+		}
+		return $cart_item;
+	}
+
 	/**
 	 *
+	 * Adds custom field to the cart.
+	 */
+	public function add_wc_custom_field_to_cart_metadata( $cart_item_data, $product_id, $variation_id, $quantity ) {
+		if ( ! empty( $_POST['custom_product_text_field'] ) ) { // Make sure to use the correct name
+			$cart_item_data['custom_product_text_field'] = sanitize_text_field( wp_unslash( $_POST['custom_product_text_field'] ) );
+		}
+			return $cart_item_data;
+	}
+
+	/**
+	 *
+	 * Display the value from the custom field in the cart
 	 */
 	public function display_custom_field_value_in_cart( $item_data, $cart_item ) {
 		if ( isset( $cart_item['custom_product_text_field'] ) ) {
@@ -65,27 +88,10 @@ class Render {
 		return $item_data;
 	}
 
-	/**
-	 * Preserve custom data in the cart session
-	 */
-	public function get_cart_items_from_session( $cart_item, $values ) {
-		if ( isset( $values['custom_product_text_field'] ) ) {
-			$cart_item['custom_product_text_field'] = $values['custom_product_text_field'];
-		}
-		return $cart_item;
-	}
+
 
 	/**
-	 * Display the value from the custom field to the cart && checkout pages
-	 */
-	public function add_wc_custom_field_to_cart_metadata( $cart_item_data, $product_id, $variation_id, $quantity ) {
-		if ( ! empty( $_POST['custom_product_text_field'] ) ) { // Make sure to use the correct name
-			$cart_item_data['custom_product_text_field'] = sanitize_text_field( wp_unslash( $_POST['custom_product_text_field'] ) );
-		}
-			return $cart_item_data;
-	}
-
-	/**
+	 *
 	 * Add custom field to order object
 	 */
 	public function add_wc_custom_field_to_order( $item, $cart_item_key, $values, $order ) {
@@ -96,6 +102,7 @@ class Render {
 
 	/**
 	 *
+	 * Display field to order object
 	 */
 	public function display_custom_field_in_order_details( $item_id, $item, $order ) {
 		$custom_field_value = $item->get_meta( 'Custom Field' );
