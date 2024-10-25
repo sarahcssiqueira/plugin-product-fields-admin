@@ -1,19 +1,26 @@
 <?php
 /**
  *
- * Plugin Main Class File
+ * Validations class
  *
  * @package Product_Fields_Admin
  */
 
 namespace ProductFieldsAdmin\Inc;
 
-defined( 'ABSPATH' ) || exit;
-
+/**
+ *
+ */
 class Validations {
 
+	/**
+	 *
+	 */
 	protected static $instance = null;
 
+	/**
+	 *
+	 */
 	public function __construct() {
 
 		add_filter( 'woocommerce_add_to_cart_validation', [ $this, 'validate_wc_custom_fields' ], 10, 3 );

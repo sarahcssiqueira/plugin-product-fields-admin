@@ -1,33 +1,33 @@
 <?php
 /**
  *
- * Plugin Main Class File
+ * Register Class
  *
  * @package Product_Fields_Admin
  */
 
 namespace ProductFieldsAdmin\Inc;
 
-defined( 'ABSPATH' ) || exit;
-
+/**
+ * Register Class
+ */
 class Register {
 
-    /**
-     * @var singleton
-     */    
+	/**
+	 * @var null
+	 */
 	protected static $instance = null;
 
+	/**
+	 *
+	 */
 	public function __construct() {
 
 		add_action( 'woocommerce_product_data_panels', [ $this, 'register_product_fields' ] );
 		add_action( 'woocommerce_process_product_meta', [ $this, 'save_product_fields' ] );
-        add_filter( 'woocommerce_product_data_tabs', [ $this, 'settings_tabs' ] );
+		add_filter( 'woocommerce_product_data_tabs', [ $this, 'settings_tabs' ] );
 
 	}
-
-    /*
-    * get products method
-    */
 
 	/**
 	 * Register Custom Fields
@@ -53,10 +53,15 @@ class Register {
 	 */
 	public function save_product_fields( $post_id ) {
 
-		$product = wc_get_product( $post_id );
-		$title   = isset( $_POST['custom_product_text_field'] ) ? $_POST['custom_product_text_field'] : '';
-		$product->update_meta_data( 'custom_product_text_field', sanitize_text_field( $title ) );
-		$product->save();
+			// Process form data.
+			$product = wc_get_product( $post_id );
+			$title   = isset( $_POST['custom_product_text_field'] ) ? sanitize_text_field( wp_unslash( $_POST['custom_product_text_field'] ) ) : '';
+			$title   = sanitize_text_field( $title );
+
+			// Update product meta data.
+			$product->update_meta_data( 'custom_product_text_field', $title );
+			$product->save();
+
 	}
 
 	/**
@@ -75,8 +80,8 @@ class Register {
 		return $tabs;
 
 	}
-    
-    /**
+
+	/**
 	 * Return the single class instance
 	 */
 	public static function singleton() {
