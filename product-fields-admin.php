@@ -18,16 +18,22 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Bootstraps the plugin.
  */
-require __DIR__ . '/inc/class-render.php';
-require __DIR__ . '/inc/class-register.php';
-require __DIR__ . '/inc/class-validations.php';
+require __DIR__ . '/inc/class-admin.php';
+require __DIR__ . '/inc/class-fields-handler.php';
+require __DIR__ . '/inc/class-connect.php';
+require __DIR__ . '/inc/class-custom-field-data-handler.php';
+require __DIR__ . '/inc/class-custom-field-display-manager.php';
 
 
-use ProductFieldsAdmin\Inc\Register;
-use ProductFieldsAdmin\Inc\Render;
-// use ProductFieldsAdmin\Inc\Validations;
+use ProductFieldsAdmin\Inc\Admin;
+use ProductFieldsAdmin\Inc\FieldsHandler;
+use ProductFieldsAdmin\Inc\Connect;
+use ProductFieldsAdmin\Inc\CustomFieldDataHandler;
+use ProductFieldsAdmin\Inc\CustomFieldDisplayManager;
 
 
-Register::singleton();
-Render::singleton();
-// Validations::singleton();
+$fields_handler = new FieldsHandler();
+$admin          = new Admin( $fields_handler );
+$connect        = new Connect( $fields_handler );
+$includes       = new CustomFieldDataHandler();
+$display        = new CustomFieldDisplayManager();

@@ -37,6 +37,7 @@ class Register {
 
 		echo '<div id="product_add_ons" class="panel woocommerce_options_panel hidden">';
 
+		// get input from an admin class method
 		woocommerce_wp_text_input(
 			[
 				'id'          => 'custom_product_text_field',
