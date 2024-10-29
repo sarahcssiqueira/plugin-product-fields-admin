@@ -17,26 +17,16 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Bootstrap the plugin by including necessary class files.
- *
- * This section initializes the core classes required for the plugin's functionality.
- * It includes the classes responsible for managing admin settings, custom fields,
- * data handling, and display logic.
+ * Composer Autoload
  */
+require __DIR__ . '/vendor/autoload.php';
 
-// Include necessary class files.
-require __DIR__ . '/inc/class-admin.php';
-require __DIR__ . '/inc/class-fields-handler.php';
-require __DIR__ . '/inc/class-connect.php';
-require __DIR__ . '/inc/class-custom-field-data-handler.php';
-require __DIR__ . '/inc/class-custom-field-display-manager.php';
-
-// Use classes from the ProductFieldsAdmin\Inc namespace.
-use ProductFieldsAdmin\Inc\Admin;
-use ProductFieldsAdmin\Inc\FieldsHandler;
-use ProductFieldsAdmin\Inc\Connect;
-use ProductFieldsAdmin\Inc\CustomFieldDataHandler;
-use ProductFieldsAdmin\Inc\CustomFieldDisplayManager;
+// Use classes from the ProductCustomizationAddons\Inc namespace.
+use ProductCustomizationAddons\Inc\FieldsHandler;
+use ProductCustomizationAddons\Inc\Admin;
+use ProductCustomizationAddons\Inc\Connect;
+use ProductCustomizationAddons\Inc\CustomFieldDataHandler;
+use ProductCustomizationAddons\Inc\CustomFieldDisplayManager;
 
 // Instantiate the necessary classes to activate the plugin's functionality.
 $fields_handler = new FieldsHandler();

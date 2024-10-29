@@ -8,7 +8,7 @@
  * @package Product_Customization_Add-ons
  */
 
-namespace ProductFieldsAdmin\Inc;
+namespace ProductCustomizationAddons\Inc;
 
 /**
  * Class Admin

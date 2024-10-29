@@ -7,7 +7,7 @@
     {
       "name": "sarahcssiqueira",
       "email": "sarahcosiqueira@gmail.com",
-      "homepage": "https://sarahjobs.com"
+      "homepage": "https://sarahsiqueira.com"
     }
   ],
   "support": {
@@ -16,7 +16,7 @@
   },
   "autoload": {
     "psr-4": {
-      "ProductFieldsAdmin\\Inc\\": "./inc"
+      "ProductCustomizationAddons\\Inc\\": "inc/"
     }
   },
   "require": {},
