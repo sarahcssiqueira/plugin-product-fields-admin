@@ -10,7 +10,10 @@
     <arg name="extensions" value="php"/>
     <arg name="cache" value=".phpcs.cache"/>
 
-    <rule ref="WordPress"/>
+    <rule ref="WordPress">
+     <!-- PSR4 -->
+     <exclude name="WordPress.Files.FileName" />
+</rule>
 
     <rule ref="WordPress-Extra"/>
 
