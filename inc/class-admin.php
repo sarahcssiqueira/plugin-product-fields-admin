@@ -1,25 +1,35 @@
 <?php
 /**
  *
- * Admin
+ * Admin Class
  *
- * @package Product_Fields_Admin
+ * Handles the customization options for WooCommerce products.
+ *
+ * @package Product_Customization_Add-ons
  */
 
 namespace ProductFieldsAdmin\Inc;
 
 /**
+ * Class Admin
  *
+ * This class manages the WooCommerce admin product customization settings,
+ * including adding custom tabs and saving custom fields.
  */
 class Admin {
-
 	/**
+	 * Fields handler instance.
 	 *
+	 * @var FieldsHandler
 	 */
 	private $fields_handler;
 
 	/**
+	 * Admin constructor.
 	 *
+	 * Initializes the class and sets up the necessary hooks for WooCommerce.
+	 *
+	 * @param FieldsHandler $fields_handler An instance of FieldsHandler to manage custom fields.
 	 */
 	public function __construct( FieldsHandler $fields_handler ) {
 		$this->fields_handler = $fields_handler;
@@ -32,15 +42,16 @@ class Admin {
 	}
 
 	/**
-	 * Creates a custom tab for the custom fields
+	 * Creates a custom tab in the WooCommerce product data panel.
 	 *
-	 * @param array $tabs Custom Tab.
+	 * @param array $tabs Existing product data tabs.
+	 * @return array Modified product data tabs with the new customization options tab.
 	 */
 	public function settings_tabs( $tabs ) {
 
-		$tabs['product_add_ons'] = [
-			'label'    => 'Product Add-Ons',
-			'target'   => 'product_add_ons',
+		$tabs['customization_options'] = [
+			'label'    => 'Customization Options',
+			'target'   => 'customization_options',
 			'class'    => [ 'show_if_simple' ],
 			'priority' => 21,
 		];
@@ -49,12 +60,12 @@ class Admin {
 	}
 
 	/**
-	 * Register Custom Fields
+	 * Renders the content of the Customization Options tab.
 	 */
 	public function render_product_tab_content() {
 		?>
-		<div id="product_add_ons" class="panel woocommerce_options_panel">
-			<h3><?php esc_html_e( 'Custom Product Fields' ); ?></h3>
+		<div id="customization_options" class="panel woocommerce_options_panel">
+			<h3><?php esc_html_e( 'Customization Options' ); ?></h3>
 				<?php
 				$this->fields_handler->register_product_fields();
 				$this->render_existing_fields();
@@ -65,25 +76,28 @@ class Admin {
 	}
 
 	/**
-	 * Save Fields
+	 * Saves the customized fields when the product is saved.
+	 *
+	 * @param int $post_id The ID of the product being saved.
 	 */
 	public function save_product_fields( $post_id ) {
 
 			// Process form data.
 			$product = wc_get_product( $post_id );
-			$title   = isset( $_POST['custom_product_text_field'] ) ? sanitize_text_field( wp_unslash( $_POST['custom_product_text_field'] ) ) : '';
+			$title   = isset( $_POST['customized_option_text'] ) ? sanitize_text_field( wp_unslash( $_POST['customized_option_text'] ) ) : '';
 			$title   = sanitize_text_field( $title );
 
 			// Update product meta data.
-			$product->update_meta_data( 'custom_product_text_field', $title );
+			$product->update_meta_data( 'customized_option_text', $title );
 			$product->save();
 
 	}
 
 	/**
-	 *  Render existing fields based on saved custom fields.
+	 * Renders existing fields based on saved custom fields.
 	 */
 	public function render_existing_fields() {
+		// Logic to render existing custom fields will be added here.
 	}
 
 }

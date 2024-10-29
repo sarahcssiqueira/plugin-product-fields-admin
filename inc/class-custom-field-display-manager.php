@@ -1,6 +1,7 @@
 <?php
 /**
- * Class CustomFieldDisplayManager
+ *
+ * CustomFieldDisplayManager Class
  *
  * This class is responsible for rendering custom fields in the appropriate locations on the frontend.
  * It takes care of displaying the custom field information in the following areas:
@@ -10,20 +11,24 @@
  * - Checkout: To display any custom fields that users filled out during the checkout process.
  * - Order confirmation: To present the custom field information in the order details for both customers and store admins.
  *
- * The ClassDisplay class will handle the presentation layer of custom fields, ensuring that users can easily
- * view and understand the additional information provided alongside the standard WooCommerce functionality.
+ * @package Product_Customization_Add-ons
  */
 
 namespace ProductFieldsAdmin\Inc;
 
+/**
+ * Class CustomFieldDisplayManager
+ *
+ * This class manages the display of custom fields in WooCommerce, including on product pages,
+ * in the cart, during checkout, and in order details.
+ */
 class CustomFieldDisplayManager {
-	/**
-	 *
-	 */
-	protected static $instance = null;
+
 
 	/**
+	 * CustomFieldDisplayManager constructor.
 	 *
+	 * Initializes the class and sets up the necessary hooks for displaying custom fields.
 	 */
 	public function __construct() {
 
@@ -33,20 +38,22 @@ class CustomFieldDisplayManager {
 	}
 
 	/**
+	 * Displays custom fields on the product page.
 	 *
-	 * Display the fields in the product page
+	 * This method retrieves the custom field metadata and outputs the corresponding input field
+	 * for users to fill out.
 	 */
 	public function display_wc_product_custom_fields() {
 		global $post;
 
 		$product = wc_get_product( $post->ID );
 
-		$title = $product->get_meta( 'custom_product_text_field' );
+		$title = $product->get_meta( 'customized_option_text' );
 
 		if ( $title ) {
 			printf(
 				'<div><label for="">%s</label>
-                    <input type="text" id="wc-custom-field" name="custom_product_text_field" value="">
+                    <input type="text" id="wc-custom-field" name="customized_option_text" value="">
                 </div>',
 				esc_html( $title )
 			);
@@ -54,29 +61,40 @@ class CustomFieldDisplayManager {
 	}
 
 	/**
+	 * Displays the custom field value in the cart.
 	 *
-	 * Display the value from the custom field in the cart
+	 * This method adds the custom field data to the item data displayed in the cart.
+	 *
+	 * @param array $item_data Existing item data for the cart item.
+	 * @param array $cart_item The cart item data.
+	 * @return array Modified item data with custom field information.
 	 */
 	public function display_custom_field_value_in_cart( $item_data, $cart_item ) {
-		if ( isset( $cart_item['custom_product_text_field'] ) ) {
+		if ( isset( $cart_item['customized_option_text'] ) ) {
 			$item_data[] = [
 				'key'   => 'Custom Field',
-				'value' => wc_clean( $cart_item['custom_product_text_field'] ),
+				'value' => wc_clean( $cart_item['customized_option_text'] ),
 			];
 		}
 		return $item_data;
 	}
 
 
-
 	/**
+	 * Displays the custom field value in the order details.
 	 *
-	 * Display field to order object
+	 * This method retrieves the custom field value from the order item and displays it
+	 * in the order details for customers and admins.
+	 *
+	 * @param int                    $item_id The ID of the order item.
+	 * @param \WC_Order_Item_Product $item The order item object.
+	 * @param \WC_Order              $order The order object.
 	 */
 	public function display_custom_field_in_order_details( $item_id, $item, $order ) {
 		$custom_field_value = $item->get_meta( 'Custom Field' );
+		$custom_field_label = $item->get_meta( 'Custom Field Label', true );
 		if ( ! empty( $custom_field_value ) ) {
-			echo '<p><strong>Custom Field:</strong> ' . esc_html( $custom_field_value ) . '</p>';
+			echo $custom_field_label . esc_html( $custom_field_value ) . '</p>';
 		}
 	}
 
